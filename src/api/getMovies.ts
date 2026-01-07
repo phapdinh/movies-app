@@ -1,0 +1,25 @@
+import type { AxiosResponse } from 'axios';
+import axiosBase from './baseConfig';
+import { getCurrentBearerToken } from './getBearerToken';
+
+export interface Params {
+    page?: number;
+    limit?: number;
+    search?: string;
+    genre?: string;
+}
+
+interface Movie {
+    id: string;
+    title: string;
+    posterUrl: string;
+    rating: string;
+}
+
+interface Data {
+    data: Movie[];
+}
+
+export default function getMovies(params: Params): Promise<AxiosResponse<Data>> {
+    return axiosBase.get('/movies', { headers: { Authorization: `Bearer ${getCurrentBearerToken()}` }, params });
+}
