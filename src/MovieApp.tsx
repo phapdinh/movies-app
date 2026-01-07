@@ -11,23 +11,23 @@ function MovieApp() {
     const [selectedPage, setSelectedPage] = useState<number | undefined>(undefined);
     const { isFetching: isFetchingBearerToken, error } = useQuery({
         queryKey: ['getBearerToken'],
-        queryFn: async () => {
-            const response = await getBearerToken();
+        queryFn: async ({ signal }) => {
+            const response = await getBearerToken(signal);
             setBearerToken(response.data.token);
             return response;
         }
     });
     const { isFetching: isFetchingMovieGenres, data: movieGenres } = useQuery({
         queryKey: ['getMovieGenres'],
-        queryFn: async () => {
-            const response = await getMovieGenres();
+        queryFn: async ({ signal }) => {
+            const response = await getMovieGenres(signal);
             return response;
         },
         enabled: !!getCurrentBearerToken()
     });
     const { isFetching: isFetchingMovies, error: errorSearchingMovies, refetch, data: moviesData } = useQuery({
         queryKey: ['moviesSearch'],
-        queryFn: () => getMovies({ search: searchTerm, genre: selectedGenre, page: selectedPage }),
+        queryFn: ({ signal }) => getMovies({ search: searchTerm, genre: selectedGenre, page: selectedPage }, signal),
         enabled: false,
         retry: false,
         gcTime: 0,

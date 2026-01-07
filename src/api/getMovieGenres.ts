@@ -8,6 +8,6 @@ interface Data {
         title: string;
     }[];
 }
-export default function getMovieGenres(): Promise<AxiosResponse<Data>> {
-    return axiosBase.get('/genres/movies', { headers: { Authorization: `Bearer ${getCurrentBearerToken()}` } });
+export default function getMovieGenres(signal?: AbortSignal): Promise<AxiosResponse<Data>> {
+    return axiosBase.get('/genres/movies', { headers: { Authorization: `Bearer ${getCurrentBearerToken()}` }, signal });
 }

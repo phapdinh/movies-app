@@ -21,6 +21,6 @@ interface Data {
     totalPages: number;
 }
 
-export default function getMovies(params: Params): Promise<AxiosResponse<Data>> {
-    return axiosBase.get('/movies', { headers: { Authorization: `Bearer ${getCurrentBearerToken()}` }, params });
+export default function getMovies(params: Params, signal?: AbortSignal): Promise<AxiosResponse<Data>> {
+    return axiosBase.get('/movies', { headers: { Authorization: `Bearer ${getCurrentBearerToken()}` }, params, signal });
 }
