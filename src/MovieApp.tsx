@@ -26,7 +26,7 @@ function MovieApp() {
         enabled: !!getCurrentBearerToken()
     });
     const { isFetching: isFetchingMovies, error: errorSearchingMovies, refetch, data: moviesData } = useQuery({
-        queryKey: ['moviesSearch', searchTerm, selectedGenre],
+        queryKey: ['moviesSearch'],
         queryFn: () => getMovies({ search: searchTerm, genre: selectedGenre, page: selectedPage }),
         enabled: false,
         retry: false,
@@ -38,7 +38,8 @@ function MovieApp() {
     }
 
     function handleSearchSubmit() {
-        refetch();
+        setSelectedPage(undefined)
+        setTimeout(() => refetch(), 0);
     }
 
     function handlePageChange(_: React.ChangeEvent<unknown>, page: number) {
