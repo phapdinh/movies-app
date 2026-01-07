@@ -1,0 +1,12 @@
+.poster-image {
+    height: 65%;
+}
+
+.movie-card {
+    width: 150px;
+    height: 300px;
+}
+
+.genre-selector {
+    min-width: 3rem;
+}
