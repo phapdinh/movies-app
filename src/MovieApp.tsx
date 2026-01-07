@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from '@tanstack/react-query'
-import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography, Pagination, Stack } from '@mui/material';
 import { getMovies, getBearerToken, setBearerToken, getMovieGenres, getCurrentBearerToken } from "./api";
 import Loader from "./components/Loader/Loader";
 import MovieCard from "./components/MovieCard/MovieCard";
@@ -8,6 +8,7 @@ import MovieCard from "./components/MovieCard/MovieCard";
 function MovieApp() {
     const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
     const [selectedGenre, setSelectedGenre] = useState<string | undefined>(undefined);
+    const [selectedPage, setSelectedPage] = useState<number | undefined>(undefined);
     const { isFetching: isFetchingBearerToken, error } = useQuery({
         queryKey: ['getBearerToken'],
         queryFn: async () => {
@@ -25,11 +26,10 @@ function MovieApp() {
         enabled: !!getCurrentBearerToken()
     });
     const { isFetching: isFetchingMovies, error: errorSearchingMovies, refetch, data: moviesData } = useQuery({
-        queryKey: ['moviesSearch', searchTerm],
-        queryFn: () => getMovies({ search: searchTerm, genre: selectedGenre }),
+        queryKey: ['moviesSearch', searchTerm, selectedGenre],
+        queryFn: () => getMovies({ search: searchTerm, genre: selectedGenre, page: selectedPage }),
         enabled: false,
         retry: false,
-        staleTime: 0,
         gcTime: 0,
     })
 
@@ -39,6 +39,11 @@ function MovieApp() {
 
     function handleSearchSubmit() {
         refetch();
+    }
+
+    function handlePageChange(_: React.ChangeEvent<unknown>, page: number) {
+        setSelectedPage(page);
+        setTimeout(() => refetch(), 0);
     }
 
     if (isFetchingBearerToken || isFetchingMovieGenres) return <div>Welcome to movie app...</div>;
@@ -68,9 +73,17 @@ function MovieApp() {
             <Button variant="contained" onClick={handleSearchSubmit}>Search</Button>
             {moviesData?.data?.data && <Typography>Found {moviesData.data.data.length} movies</Typography>}
         </Grid>
-        <Grid container>
+        <Grid container marginTop={5}>
             {moviesData?.data?.data &&
-                (moviesData.data.data.length > 0 ? moviesData.data.data.map((movie) => <MovieCard key={movie.id} rating={movie.rating} posterUrl={movie.posterUrl} title={movie.title} />) : <Typography>No movies found</Typography>)}
+                (moviesData.data.data.length > 0 ?
+                    <Stack>
+                        <Grid container spacing={1}>
+                            {moviesData.data.data.map((movie) => <MovieCard key={movie.id} rating={movie.rating} posterUrl={movie.posterUrl} title={movie.title} />)}
+                        </Grid>
+                        {moviesData.data.totalPages > 1 && <Grid container marginTop={7}>
+                            <Pagination count={moviesData.data.totalPages} page={selectedPage} onChange={handlePageChange} />
+                        </Grid>}
+                    </Stack> : <Typography>No movies found</Typography>)}
         </Grid>
     </Grid>;
 }

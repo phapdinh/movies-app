@@ -8,5 +8,5 @@
 }
 
 .genre-selector {
-    min-width: 3rem;
+    min-width: 6rem !important;
 }

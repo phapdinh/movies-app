@@ -18,6 +18,7 @@ interface Movie {
 
 interface Data {
     data: Movie[];
+    totalPages: number;
 }
 
 export default function getMovies(params: Params): Promise<AxiosResponse<Data>> {
