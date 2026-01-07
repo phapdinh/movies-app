@@ -59,7 +59,7 @@ function MovieApp() {
         <Grid container>
             <TextField id="search-movies" label="Search Movies" value={searchTerm} variant="standard" onChange={handleSearchChange} />
             <FormControl className="genre-selector">
-                <InputLabel id="genre-selector-label">Genre</InputLabel>
+                <InputLabel id="genre-selector-inputlabel">Genre</InputLabel>
                 <Select
                     labelId="genre-selector-label"
                     id="genre-select"
@@ -71,7 +71,7 @@ function MovieApp() {
                     ))}
                 </Select>
             </FormControl>
-            <Button variant="contained" onClick={handleSearchSubmit}>Search</Button>
+            <Button variant="contained" onClick={handleSearchSubmit} id="search-button">Search</Button>
             {moviesData?.data?.data && <Typography>Found {moviesData.data.data.length} movies</Typography>}
         </Grid>
         <Grid container marginTop={5}>
@@ -82,7 +82,7 @@ function MovieApp() {
                             {moviesData.data.data.map((movie) => <MovieCard key={movie.id} rating={movie.rating} posterUrl={movie.posterUrl} title={movie.title} />)}
                         </Grid>
                         {moviesData.data.totalPages > 1 && <Grid container marginTop={7}>
-                            <Pagination count={moviesData.data.totalPages} page={selectedPage} onChange={handlePageChange} />
+                            <Pagination count={moviesData.data.totalPages} page={selectedPage} onChange={handlePageChange} id="movie-pagination" />
                         </Grid>}
                     </Stack> : <Typography>No movies found</Typography>)}
         </Grid>
