@@ -19,10 +19,7 @@ function MovieApp() {
     });
     const { isFetching: isFetchingMovieGenres, data: movieGenres } = useQuery({
         queryKey: ['getMovieGenres'],
-        queryFn: async ({ signal }) => {
-            const response = await getMovieGenres(signal);
-            return response;
-        },
+        queryFn: ({ signal }) => getMovieGenres(signal),
         enabled: !!getCurrentBearerToken()
     });
     const { isFetching: isFetchingMovies, error: errorSearchingMovies, refetch, data: moviesData } = useQuery({
