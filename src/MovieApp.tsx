@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from '@tanstack/react-query'
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography, Pagination, Stack } from '@mui/material';
-import { getMovies, getBearerToken, setBearerToken, getMovieGenres, getCurrentBearerToken } from "./api";
+import { getMovies, getBearerToken, setBearerToken, getMovieGenres } from "./api";
 import Loader from "./components/Loader/Loader";
 import MovieCard from "./components/MovieCard/MovieCard";
 
@@ -9,7 +9,7 @@ function MovieApp() {
     const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
     const [selectedGenre, setSelectedGenre] = useState<string | undefined>(undefined);
     const [selectedPage, setSelectedPage] = useState<number | undefined>(undefined);
-    const { isFetching: isFetchingBearerToken, error } = useQuery({
+    const { isFetching: isFetchingBearerToken, error, isSuccess } = useQuery({
         queryKey: ['getBearerToken'],
         queryFn: async ({ signal }) => {
             const response = await getBearerToken(signal);
@@ -20,7 +20,7 @@ function MovieApp() {
     const { isFetching: isFetchingMovieGenres, data: movieGenres } = useQuery({
         queryKey: ['getMovieGenres'],
         queryFn: ({ signal }) => getMovieGenres(signal),
-        enabled: !!getCurrentBearerToken()
+        enabled: isSuccess
     });
     const { isFetching: isFetchingMovies, error: errorSearchingMovies, refetch, data: moviesData } = useQuery({
         queryKey: ['moviesSearch'],
