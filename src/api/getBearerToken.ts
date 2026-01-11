@@ -1,6 +1,5 @@
 import type { AxiosResponse } from 'axios';
-import axiosBase from './baseConfig';
-import { queryClient } from '../App';
+import axiosBase, { queryClient } from './baseConfig';
 
 export default function getBearerToken(signal?: AbortSignal): Promise<AxiosResponse<{ token: string }>> {
     return axiosBase.get('/auth/token', { signal });

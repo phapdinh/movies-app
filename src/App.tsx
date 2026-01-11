@@ -1,11 +1,7 @@
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import './App.css';
 import MovieApp from './MovieApp';
-
-export const queryClient = new QueryClient()
+import { queryClient } from './api/baseConfig';
 
 function App() {
   return (
