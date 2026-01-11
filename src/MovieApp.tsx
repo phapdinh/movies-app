@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from '@tanstack/react-query'
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography, Pagination, Stack } from '@mui/material';
-import { getMovies, getBearerToken, setBearerToken, getMovieGenres } from "./api";
+import { getMovies, getBearerToken, getMovieGenres } from "./api";
 import Loader from "./components/Loader/Loader";
 import MovieCard from "./components/MovieCard/MovieCard";
 
@@ -11,11 +11,7 @@ function MovieApp() {
     const [selectedPage, setSelectedPage] = useState<number | undefined>(undefined);
     const { isFetching: isFetchingBearerToken, error, isSuccess } = useQuery({
         queryKey: ['getBearerToken'],
-        queryFn: async ({ signal }) => {
-            const response = await getBearerToken(signal);
-            setBearerToken(response.data.token);
-            return response;
-        }
+        queryFn: ({ signal }) => getBearerToken(signal)
     });
     const { isFetching: isFetchingMovieGenres, data: movieGenres } = useQuery({
         queryKey: ['getMovieGenres'],

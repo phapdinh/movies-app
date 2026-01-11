@@ -1,6 +1,7 @@
 import type { AxiosResponse } from 'axios';
 import axiosBase from './baseConfig';
 import { getCurrentBearerToken } from './getBearerToken';
+import { queryClient } from '../App';
 
 export interface Params {
     page?: number;

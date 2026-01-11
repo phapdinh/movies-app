@@ -5,7 +5,7 @@ import {
 import './App.css';
 import MovieApp from './MovieApp';
 
-const queryClient = new QueryClient()
+export const queryClient = new QueryClient()
 
 function App() {
   return (
