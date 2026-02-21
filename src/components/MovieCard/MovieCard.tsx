@@ -9,7 +9,7 @@ interface MovieCardProps {
 
 export default function MovieCard({ title, posterUrl, rating }: MovieCardProps) {
     return (
-        <Paper elevation={3} className='movie-card'>
+        <Paper elevation={3} className='movie-card' data-testid="movie-card">
             <img src={posterUrl} alt={title} className='poster-image' />
             <h3>{title}</h3>
             <p>Rating: {rating}</p>
