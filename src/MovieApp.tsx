@@ -50,21 +50,22 @@ function MovieApp() {
 
     return <Grid>
         <Grid container>
-            <TextField id="search-movies" label="Search Movies" value={searchTerm} variant="standard" onChange={handleSearchChange} />
+            <TextField inputProps={{ 'data-testid': 'search-input' }} id="search-movies" label="Search Movies" value={searchTerm} variant="standard" onChange={handleSearchChange} />
             <FormControl className="genre-selector">
                 <InputLabel id="genre-selector-inputlabel">Genre</InputLabel>
                 <Select
+                    data-testid="genre-select"
                     labelId="genre-selector-label"
                     id="genre-select"
                     value={selectedGenre}
                     label="Genre"
                 >
                     {movieGenres?.data?.data.map((genre) => (
-                        <MenuItem key={genre.id} value={genre.title} onClick={() => setSelectedGenre(genre.title)}>{genre.title}</MenuItem>
+                        <MenuItem data-testid={`genre-item-${genre.id}`} key={genre.id} value={genre.title} onClick={() => setSelectedGenre(genre.title)}>{genre.title}</MenuItem>
                     ))}
                 </Select>
             </FormControl>
-            <Button variant="contained" onClick={handleSearchSubmit} id="search-button">Search</Button>
+            <Button data-testid="search-button" variant="contained" onClick={handleSearchSubmit} id="search-button">Search</Button>
             {moviesData?.data?.data && <Typography>Found {moviesData.data.data.length} movies</Typography>}
         </Grid>
         <Grid container marginTop={5}>
@@ -75,7 +76,7 @@ function MovieApp() {
                             {moviesData.data.data.map((movie) => <MovieCard key={movie.id} rating={movie.rating} posterUrl={movie.posterUrl} title={movie.title} />)}
                         </Grid>
                         {moviesData.data.totalPages > 1 && <Grid container marginTop={7}>
-                            <Pagination count={moviesData.data.totalPages} page={selectedPage} onChange={handlePageChange} id="movie-pagination" />
+                            <Pagination data-testid="movie-pagination" count={moviesData.data.totalPages} page={selectedPage} onChange={handlePageChange} id="movie-pagination" />
                         </Grid>}
                     </Stack> : <Typography>No movies found</Typography>)}
         </Grid>

@@ -14,48 +14,6 @@ vi.mock('./components/Loader/Loader', () => ({
 }));
 
 
-// Mock Material-UI to avoid issues in test environment
-vi.mock('@mui/material', async () => {
-  const actual = await vi.importActual('@mui/material');
-  return {
-    ...actual,
-    Select: ({ children, value, onChange, ...props }: any) => (
-      <select
-        data-testid="genre-select"
-        value={value || ''}
-        onChange={(e) => onChange(e)}
-        {...props}
-      >
-        {children}
-      </select>
-    ),
-    MenuItem: ({ children, value, onClick, ...props }: any) => (
-      <option value={value} {...props} onClick={onClick}>
-        {children}
-      </option>
-    ),
-    TextField: ({ value, onChange, ...props }: any) => (
-      <input
-        data-testid="search-input"
-        value={value || ''}
-        onChange={onChange}
-        {...props}
-      />
-    ),
-    Button: ({ children, onClick, ...props }: any) => (
-      <button data-testid="search-button" onClick={onClick} {...props}>
-        {children}
-      </button>
-    ),
-    Pagination: ({ onChange }: any) => (
-      <div data-testid="pagination">
-        <button onClick={(e) => onChange(e, 1)}>Page 1</button>
-        <button onClick={(e) => onChange(e, 2)}>Page 2</button>
-      </div>
-    ),
-  };
-});
-
 describe('MovieApp Component', () => {
   let queryClient: QueryClient;
 
@@ -79,9 +37,7 @@ describe('MovieApp Component', () => {
   };
 
   it('should render loading message while fetching bearer token', () => {
-    vi.mocked(api.getBearerToken).mockReturnValue(
-      Promise.resolve({}) as any
-    );
+    vi.mocked(api.getBearerToken).mockResolvedValue({} as any);
 
     renderComponent();
     expect(screen.getByText(/Welcome to movie app/i)).toBeInTheDocument();
@@ -274,7 +230,7 @@ describe('MovieApp Component', () => {
     fireEvent.click(searchButton);
 
     await waitFor(() => {
-      expect(screen.getByTestId('pagination')).toBeInTheDocument();
+      expect(screen.getByTestId('movie-pagination')).toBeInTheDocument();
     });
   });
 
@@ -367,7 +323,7 @@ describe('MovieApp Component', () => {
 
     // Mock a slow request
     vi.mocked(api.getMovies).mockImplementation(
-      () => new Promise(() => {}) // Never resolves
+      () => new Promise(() => { }) // Never resolves
     );
 
     renderComponent();
